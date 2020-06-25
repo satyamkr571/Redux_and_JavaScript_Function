@@ -1,11 +1,10 @@
-//import createSagaMiddleware from "redux-saga";
 const redux = require("redux");
 const sagaMiddleware = require("redux-saga");
 const axios = require("axios");
 
 const createStore = redux.createStore;
 const applyMiddleware = redux.applyMiddleware;
-const createSagaMiddleware = sagaMiddleware.createSagaMiddleware;
+const sagaMiddleware = sagaMiddleware.createSagaMiddleware();
 
 const initialState = {
   loading: false,
@@ -76,7 +75,7 @@ const fetchUsers = () => {
   };
 };
 
-const store = createStore(reducer, applyMiddleware(createSagaMiddleware));
+const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 store.subscribe(() => {
   console.log(store.getState());
 });
