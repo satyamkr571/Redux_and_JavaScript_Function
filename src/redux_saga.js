@@ -1,16 +1,22 @@
+import createSagaMiddleware from "redux-saga";
+
+import { takeEvery, put, call } from "redux-saga/effects";
+
 const redux = require("redux");
-const sagaMiddleware = require("redux-saga");
+//const reduxSaga = require("redux-saga");
 const axios = require("axios");
 
 const createStore = redux.createStore;
 const applyMiddleware = redux.applyMiddleware;
-const sagaMiddleware = sagaMiddleware.createSagaMiddleware();
+//const createSagaMiddleware = reduxSaga.default;
+const sagaMiddleware = createSagaMiddleware();
 
 const initialState = {
   loading: false,
   users: [],
   error: "",
 };
+
 const FETCH_USERS_REQUEST = "FETCH_USERS_REQUEST";
 const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
 const FETCH_USERS_FAILURE = "FETCH_USERS_FAILURE";
@@ -58,25 +64,25 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-const fetchUsers = () => {
-  return function (dispatch) {
-    dispatch(fetchUsersRequest());
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then((response) => {
-        console.log(response.data);
-        const users = response.data.map((user) => user);
-        dispatch(fetchUsersSuccess(users));
-      })
-      .catch((error) => {
-        dispatch(fetchUsersFailure(error.message));
-        console.log(error);
-      });
-  };
-};
+function* fetchUsers() {
+  try {
+    yield put(fetchUsersRequest());
+    const users = yield call(() => {
+      return axios
+        .get("https://jsonplaceholder.typicode.com/users")
+        .then((response) => {
+          response.data;
+        });
+    });
+
+    yield put(fetchUsersSuccess(users));
+  } catch (e) {
+    yield put(fetchUsersFailure(e));
+  }
+}
 
 const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 store.subscribe(() => {
   console.log(store.getState());
 });
-store.dispatch(fetchUsers);
+sagaMiddleware.run(fetchUsers);
