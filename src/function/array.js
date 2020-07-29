@@ -49,3 +49,14 @@ obj.getA().getB();
 arr = [5, 6];
 console.log(arr);
 console.log(String(arr));
+
+arr = [1, 2, 3, 4, 5, 456, 56, 67, 6, 7];
+console.log(arr.slice(-1), arr);
+console.log(arr[arr.length - 1], arr);
+console.log(
+  arr.filter((n) => n % 2),
+  arr
+);
+
+console.log(arr.fill(32), arr);
+console.log(arr.includes(2), arr);
