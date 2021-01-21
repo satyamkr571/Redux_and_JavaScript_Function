@@ -15,7 +15,7 @@
     "webpack-dev-server": "3.10.3"
   },
   "dependencies": {
-    "immer": "^7.0.1",
+    "immer": "^8.0.1",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
     "redux": "^4.0.5",
